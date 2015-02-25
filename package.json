@@ -1,0 +1,27 @@
+{
+  "name": "automod",
+  "version": "0.1.0",
+  "description": "Node.js module loader.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ktstowell/automod.git"
+  },
+  "keywords": [
+    "npm",
+    "node",
+    "package",
+    "nodejs",
+    "node",
+    "modules"
+  ],
+  "author": "Ken Stowell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ktstowell/automod/issues"
+  },
+  "homepage": "https://github.com/ktstowell/automod"
+}
