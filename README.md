@@ -1,5 +1,5 @@
 # Automod
-Module loading and name-spacing for Node.js app.s
+Module loading and name-spacing for Node.js applications
 
 # Installation
 `npm install --save-dev automod`
@@ -19,11 +19,13 @@ One day I got sick of writing the same require statements everywhere.
 
     mods({ignore: [], data: {}, path: ''});
 
-1. Ignore
-   Automod will examine all directories startiing on the same directory as your entry file and try and `require` them.
+1. Ignore:
 
-2. Data
-   This is to pass other `required` modules to your modules. Consider:
+   Automod will examine all sibling directories and files to your entry file and try to `require` them. Pass in file names/paths relative to your entry file and Automod will bypass them.
+
+2. Data:
+
+   This is to pass shared data to your modules. Consider:
 
        var mods = require('automod');
        var mongo = require('mongodb');
@@ -36,12 +38,12 @@ One day I got sick of writing the same require statements everywhere.
 
        mods({ignore: [], data: persistence, path: ''});
 
-  Now the persistence data will be available in you module.
+  Now the persistence data will be available in your modules.
 
  ##### In your modules:
  ***
 
- A sample users module
+ A sample users model
 
      module.exports = function(app) {
       var Users = app.data.persistence.Db.collection('users');
