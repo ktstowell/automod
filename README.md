@@ -27,16 +27,16 @@ One day I got sick of writing the same require statements everywhere.
 
    This is to pass shared data to your modules. Consider:
 
-       var mods = require('automod');
-       var mongo = require('mongodb');
+         var mods = require('automod');
+         var mongo = require('mongodb');
 
-       var persistence = {
-          Db: mongo.Db,
-          Server: mongo.Server,
-          Connection: mongo.Connection
-       };
+         var persistence = {
+            Db: mongo.Db,
+            Server: mongo.Server,
+            Connection: mongo.Connection
+         };
 
-       mods({ignore: [], data: persistence, path: ''});
+         mods({ignore: [], data: persistence, path: ''});
 
   Now the persistence data will be available in your modules.
 
@@ -45,7 +45,6 @@ One day I got sick of writing the same require statements everywhere.
 
  A sample users model
 
-     module.exports = function(app) {
-      var Users = app.data.persistence.Db.collection('users');
-        
-     };
+       module.exports = function(app) {
+        var Users = app.data.persistence.Db.collection('users');
+       };
