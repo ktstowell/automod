@@ -21,7 +21,9 @@ One day I got sick of writing the same require statements everywhere.
 
 1. Ignore:
 
-   Automod will examine all sibling directories and files to your entry file and try to `require` them. Pass in file names/paths relative to your entry file and Automod will bypass them.
+   Automod will examine all sibling directories and files to your entry file and try to `require` them. Pass in file names/paths relative to your entry file and Automod will bypass them. By default it will ignore: 
+   
+   `['node_modules', '.DS_Store', 'app.js', '.gitignore']`
 
 2. Data:
 
