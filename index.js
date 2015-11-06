@@ -2,7 +2,10 @@
 
 // Dependencies
 var fs = require('fs');
-var Module = require('./module');
+var os = require('os');
+var exec = require('child_process').exec;
+var findit = require('findit');
+var path = require('path');
 
 /***********************************************************************************************************************************************
  * AUTO MOD
@@ -10,29 +13,71 @@ var Module = require('./module');
  * @description Automatic module loading with node.js
  */
 
-var Automod = {};
-    Automod.ignore = ['node_modules', 'app.js', 'server.js', 'automod', 'package.json', '.DS_Store'];
-    Automod.modules = {};
+//
+// Platform Maps
+//------------------------------------------------------------------------------------------//
+// @description
 
-module.exports = function(specs) {
+/**
+ * system map
+ * @type {Object}
+ */
+var platforms = {
+  nix: ['darwin', 'linux', 'unix'],
+  win: ['win32', 'win64'] // not sure these are right - think they are
+};
 
-  // Set up defaults.
-  specs.path = specs.path || '../../';
-  specs.ignore = specs.ignore || [];
-  specs.data = specs.data || {};
-  specs.data.automod = Automod;
-  specs.data.modules = Automod.modules;
+/**
+ * Comand map
+ * @type {Object}
+ */
+var cmds = {
+  nix: function(src, dest) { return 'ln -s '+ src + ' ' + dest; },
+  win: function(src, dest) { return 'cp -r '+ src + ' ' + dest; }
+};
 
-  // Join ignore.
-  Automod.ignore = Automod.ignore.concat(specs.ignore);
+//
+// MODULE ENTRY
+//------------------------------------------------------------------------------------------//
+// @description
+// Accept root path or use cwd to check for all existing modules
+// while ignoring node_modules.
+// if a package.json is found, symlink or copy into node_module
+// so that require() will work.
+// 
+// this means, identity platform early
+// if windows - will need copy
+// if *nix can use symlink
+module.exports = function(opts) {
+  var src;
+  var platform;
+  var finder;
+  var manifest;
 
-  // crawl through root and create a keyspace for each module in modules and cache
-  fs.readdirSync(specs.path).forEach(function(module) {
-    if(Automod.ignore.indexOf(module) === -1) {
-      // Create a new instance of an Automod module for every whitelisted item.
-      Automod.modules[module] = Module(module, specs);
+  // member validation
+  opts = opts || {};
+  src = opts.src || process.cwd();
+  platform = os.platform();
+  manifest = 'package.json';
+
+  // Get map of generic platform
+  for(var type in platforms) {
+    if(platforms[type].indexOf(platform) !== -1) {
+      platform = type;
+      break;
     }
+  }
+
+  // start package.json parsing
+  finder = findit(src);
+
+  // Skip node modules/git
+  finder.on('directory', function(dir, stat, stop) {
+    var base = path.basename(dir);
+    if (base === '.git' || base === 'node_modules') { stop(); }
   });
 
-  return Automod;
+  finder.on('file', function(file, stat) {
+    if(path.basename(file) === manifest)
+  });
 };
