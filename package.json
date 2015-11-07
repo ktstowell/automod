@@ -4,7 +4,8 @@
   "description": "Node.js module loader.",
   "main": "index.js",
   "scripts": {
-    "test": "vows --spec"
+    "test": "vows --spec",
+    "postinstall": "mkdir spec/node_modules"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "vows": "^0.8.1"
   },
   "dependencies": {
+    "chalk": "^1.1.1",
     "findit": "^2.0.0",
     "path": "^0.12.7"
   }
